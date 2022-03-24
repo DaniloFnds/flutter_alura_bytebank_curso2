@@ -43,7 +43,7 @@ class _ContactFormWidgetState extends State<ContactFormWidget> {
                 //forma de deixar o maximo possivel do container
                 child: ElevatedButton(
                   onPressed: () {
-                    final Contact contact = Contact(
+                    final Contact contact = Contact(0,
                       this._fullNameController.text,
                       int.tryParse(this._accountNumberController.text),
                     );

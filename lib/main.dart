@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alura_bytebank_curso2/database/app_database.dart';
 import 'package:flutter_alura_bytebank_curso2/screens/dashboard.dart';
 
 void main() {
   runApp(ByteBankApp());
+    findAll().then((value) => debugPrint(value.toString()));
 }
 
 class ByteBankApp extends StatelessWidget {
