@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alura_bytebank_curso2/database/app_database.dart';
 import 'package:flutter_alura_bytebank_curso2/screens/dashboard.dart';
+
+import 'dao/contact_dao.dart';
 
 void main() {
   runApp(ByteBankApp());

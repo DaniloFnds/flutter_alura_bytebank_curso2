@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alura_bytebank_curso2/models/contact.dart';
 
-class ContactFormWidget extends StatefulWidget {
+import '../dao/contact_dao.dart';
+
+class  ContactFormWidget extends StatefulWidget {
   @override
   _ContactFormWidgetState createState() => _ContactFormWidgetState();
 }
@@ -47,8 +49,7 @@ class _ContactFormWidgetState extends State<ContactFormWidget> {
                       this._fullNameController.text,
                       int.tryParse(this._accountNumberController.text),
                     );
-
-                    Navigator.pop(context, contact);
+                    save(contact).then((value) => Navigator.pop(context));
                   },
                   child: Text('Create'),
                 ),
