@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alura_bytebank_curso2/components/progress_component.dart';
 import 'package:flutter_alura_bytebank_curso2/models/contact.dart';
 import 'package:flutter_alura_bytebank_curso2/screens/contact_form.dart';
 
 import '../dao/contact_dao.dart';
 
-class ContactsListWidget extends StatefulWidget {
+class TransferListWidget extends StatefulWidget {
   @override
-  State<ContactsListWidget> createState() => _ContactsListWidgetState();
+  State<TransferListWidget> createState() => _TransferListWidgetState();
 }
 
-class _ContactsListWidgetState extends State<ContactsListWidget> {
+class _TransferListWidgetState extends State<TransferListWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Contacts'),
+        title: Text('Transfer'),
       ),
       body: FutureBuilder<List<Contact>>(
+
         //isso serve para inicar os dados q serao enviados para o future, ate o retorno do findAll
         //eele executa uma future antes, e entao ele executa o builder
         //podemos colocar um delayed pra demorar um pouco pra liberar a cosntrucao da tela
@@ -32,7 +32,16 @@ class _ContactsListWidgetState extends State<ContactsListWidget> {
             //estado verificando, esperando terminar
             case ConnectionState.waiting:
               debugPrint('waiting ${snapshot.hasData} - ${snapshot.data}');
-              return ProgressComponent();
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Text('Loading'),
+                  ],
+                ),
+              );
               break;
             //significa q ja tem um dado disponivel, mas nao foi finalziado o future..ref: streams,..vai devolvendo valores enquanto sao entregues
             case ConnectionState.active:

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alura_bytebank_curso2/http/webclient.dart';
 import 'package:flutter_alura_bytebank_curso2/screens/dashboard.dart';
-
-import 'dao/contact_dao.dart';
 
 void main() {
   runApp(ByteBankApp());
-    findAll().then((value) => debugPrint(value.toString()));
+  getAll();
 }
 
 class ByteBankApp extends StatelessWidget {

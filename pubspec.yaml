@@ -25,6 +25,8 @@ dependencies:
     sdk: flutter
   sqflite:
   path:
+  http:
+  http_interceptor:
 
 
 
