@@ -27,19 +27,15 @@ class _ContactsListWidgetState extends State<ContactsListWidget> {
           switch (snapshot.connectionState) {
             //nao foi executado
             case ConnectionState.none:
-              debugPrint('none ${snapshot.hasData} - ${snapshot.data}');
               break;
             //estado verificando, esperando terminar
             case ConnectionState.waiting:
-              debugPrint('waiting ${snapshot.hasData} - ${snapshot.data}');
               return ProgressComponent();
               break;
             //significa q ja tem um dado disponivel, mas nao foi finalziado o future..ref: streams,..vai devolvendo valores enquanto sao entregues
             case ConnectionState.active:
-              debugPrint('active ${snapshot.hasData} - ${snapshot.data}');
               break;
             case ConnectionState.done:
-              debugPrint('done ${snapshot.hasData} - ${snapshot.data}');
               final List<Contact> contacts =
                   snapshot.hasData ? snapshot.data : [];
               return ListView.builder(

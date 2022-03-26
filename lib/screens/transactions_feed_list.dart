@@ -4,7 +4,7 @@ import 'package:flutter_alura_bytebank_curso2/http/webclient.dart';
 
 import '../models/transaction.dart';
 
-class TransactionsListWidget extends StatelessWidget {
+class TransactionsFeedWidget extends StatelessWidget {
   final List<Transaction> transactions = [];
 
   @override

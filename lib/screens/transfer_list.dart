@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alura_bytebank_curso2/models/contact.dart';
 import 'package:flutter_alura_bytebank_curso2/screens/contact_form.dart';
+import 'package:flutter_alura_bytebank_curso2/screens/transaction_form.dart';
 
 import '../dao/contact_dao.dart';
 
@@ -17,7 +18,6 @@ class _TransferListWidgetState extends State<TransferListWidget> {
         title: Text('Transfer'),
       ),
       body: FutureBuilder<List<Contact>>(
-
         //isso serve para inicar os dados q serao enviados para o future, ate o retorno do findAll
         //eele executa uma future antes, e entao ele executa o builder
         //podemos colocar um delayed pra demorar um pouco pra liberar a cosntrucao da tela
@@ -27,11 +27,9 @@ class _TransferListWidgetState extends State<TransferListWidget> {
           switch (snapshot.connectionState) {
             //nao foi executado
             case ConnectionState.none:
-              debugPrint('none ${snapshot.hasData} - ${snapshot.data}');
               break;
             //estado verificando, esperando terminar
             case ConnectionState.waiting:
-              debugPrint('waiting ${snapshot.hasData} - ${snapshot.data}');
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -45,17 +43,25 @@ class _TransferListWidgetState extends State<TransferListWidget> {
               break;
             //significa q ja tem um dado disponivel, mas nao foi finalziado o future..ref: streams,..vai devolvendo valores enquanto sao entregues
             case ConnectionState.active:
-              debugPrint('active ${snapshot.hasData} - ${snapshot.data}');
               break;
             case ConnectionState.done:
-              debugPrint('done ${snapshot.hasData} - ${snapshot.data}');
               final List<Contact> contacts =
                   snapshot.hasData ? snapshot.data : [];
               return ListView.builder(
                 itemCount: contacts.length,
                 itemBuilder: (ctx, index) {
-                  return ContactItemWidget(
+                  return TransferItemWidget(
                     contact: contacts[index],
+                    onClick: () {
+                      // debugPrint(contacts[index].toString());
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TransactionForm(
+                              contacts[index],
+                            ),
+                          ));
+                    },
                   );
                 },
               );
@@ -73,7 +79,8 @@ class _TransferListWidgetState extends State<TransferListWidget> {
             MaterialPageRoute<Contact>(
                 builder: (context) => ContactFormWidget()),
           ).then((value) {
-            setState(() {}); // chamar o setState para forçar ele a refazer o builder do widget
+            setState(
+                () {}); // chamar o setState para forçar ele a refazer o builder do widget
           });
         },
         child: Icon(Icons.add),
@@ -82,15 +89,18 @@ class _TransferListWidgetState extends State<TransferListWidget> {
   }
 }
 
-class ContactItemWidget extends StatelessWidget {
+class TransferItemWidget extends StatelessWidget {
   final Contact contact;
+  final Function onClick;
 
-  const ContactItemWidget({Key key, this.contact}) : super(key: key);
+  const TransferItemWidget({Key key, this.contact, @required this.onClick})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: () => onClick(),
         title: Text(
           this.contact.name,
           style: TextStyle(fontSize: 24.0),

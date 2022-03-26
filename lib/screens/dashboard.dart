@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alura_bytebank_curso2/screens/contacts_list.dart';
 import 'package:flutter_alura_bytebank_curso2/screens/transactions_feed_list.dart';
+import 'package:flutter_alura_bytebank_curso2/screens/transfer_list.dart';
 
 class DashBoardWidget extends StatelessWidget {
   @override
@@ -58,7 +59,7 @@ void _showTransfer(BuildContext context) {
     context,
     MaterialPageRoute(
       builder: (context) {
-        return TransactionsListWidget();
+        return TransferListWidget();
       },
     ),
   );
@@ -69,7 +70,7 @@ void _showTransactionFeed(BuildContext context) {
     context,
     MaterialPageRoute(
       builder: (context) {
-        return TransactionsListWidget();
+        return TransactionsFeedWidget();
       },
     ),
   );
