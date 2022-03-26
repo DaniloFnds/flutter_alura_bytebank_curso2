@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alura_bytebank_curso2/components/response_dialog.dart';
+import 'package:flutter_alura_bytebank_curso2/components/transaction_auth_dialog.dart';
 import 'package:flutter_alura_bytebank_curso2/http/webclient.dart';
-import 'package:flutter_alura_bytebank_curso2/screens/transactions_feed_list.dart';
 
 import '../models/contact.dart';
 import '../models/transaction.dart';
@@ -65,14 +66,16 @@ class _TransactionFormState extends State<TransactionForm> {
                           double.tryParse(_valueController.text);
                       final transactionCreated =
                           Transaction(value, widget.contact);
-                      save(transactionCreated).then((value) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TransactionsFeedWidget(),
-                          ),
-                        );
-                      });
+                      showDialog(
+                        context: context,
+                        builder: (contextDialog) => TransactionAuthDialog(
+                          // mudar o nome do context, para diferenciar o context dos widget do context principal
+                          onConfirm: (String password) {
+                            _saveTransfer(
+                                transactionCreated, password, context);
+                          },
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -82,5 +85,17 @@ class _TransactionFormState extends State<TransactionForm> {
         ),
       ),
     );
+  }
+
+  void _saveTransfer (
+      Transaction transactionCreated, String password, BuildContext context) {
+    save(transactionCreated, password).then((value) async {
+      await showDialog(context: context, builder: (contextDialog) => SuccessDialog('Sucesso'));
+      Navigator.pop(context);
+    }).catchError((e) {
+      showDialog(context: context, builder: (contextDialog) {
+        return FailureDialog(e.message);
+      });
+    }, test: (e) => e is Exception); //para garantir q nao seja outro tipo de exception
   }
 }

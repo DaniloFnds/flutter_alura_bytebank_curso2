@@ -36,7 +36,7 @@ Future<List<Transaction>> getAll() async {
   return transactions;
 }
 
-Future<bool> save(Transaction transaction) async {
+Future<int> save(Transaction transaction, String password) async {
   final Map<String, dynamic> transactionMap = transaction.toJson();
   // forma direta=> final Map<String, dynamic> transactionMap = {
   //   'value': transaction.value,
@@ -48,10 +48,19 @@ Future<bool> save(Transaction transaction) async {
   final String jsonTransaction = jsonEncode(transactionMap);
   var response = await client.post(
     Uri.parse('http://192.168.0.133:8080/transactions'),
-    headers: {'Content-type': 'application/json', 'password': '1000'},
+    headers: {'Content-type': 'application/json', 'password': password},
     body: jsonTransaction,
   );
-  return response.statusCode == 200;
+
+  if (response.statusCode == 400) {
+    throw Exception('ocorreu algum erro nos dados enviados');
+  }
+
+  if (response.statusCode == 401) {
+    throw Exception('falha de autenticacao');
+  }
+
+  return response.statusCode;
 }
 
 class LoggingInterceptor implements InterceptorContract {
