@@ -27,6 +27,7 @@ dependencies:
   path:
   http:
   http_interceptor:
+  uuid:
 
 
 

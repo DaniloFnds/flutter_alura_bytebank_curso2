@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_alura_bytebank_curso2/models/transaction.dart';
 import 'package:http/http.dart';
@@ -8,6 +9,7 @@ Client client = InterceptedClient.build(
   interceptors: [
     LoggingInterceptor(),
   ],
+  requestTimeout: Duration(seconds: 5), // um timeout padrao para todas as requisicoes
 );
 
 Future<List<Transaction>> getAll() async {
@@ -52,12 +54,19 @@ Future<int> save(Transaction transaction, String password) async {
     body: jsonTransaction,
   );
 
+  final Map<int, String> _statusCodeResponse = {
+    400: 'ocorreu algum erro nos dados enviados',
+    401: 'falha de autenticacao'
+  };
+
+  throw HttpException(_statusCodeResponse[response.statusCode]);
+
   if (response.statusCode == 400) {
-    throw Exception('ocorreu algum erro nos dados enviados');
+    throw Exception();
   }
 
   if (response.statusCode == 401) {
-    throw Exception('falha de autenticacao');
+    throw Exception();
   }
 
   return response.statusCode;
